@@ -55,6 +55,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 
     List<Pedido> findByDataPedidoGreaterThanEqual(LocalDateTime data);
 
-    List<Pedido> findByDataPedidoLessThanEqual()
+    List<Pedido> findByDataPedidoLessThanEqual();
 
 }
