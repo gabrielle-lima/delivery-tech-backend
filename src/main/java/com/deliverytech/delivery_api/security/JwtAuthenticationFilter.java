@@ -1,5 +1,8 @@
 package com.deliverytech.delivery_api.security;
+
 import java.io.IOException;
+
+import  com.deliverytech.delivery_api.security.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,29 +23,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+        HttpServletRequest request, 
+        HttpServletResponse response, 
+        FilterChain filterChain
+    ) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        if (token != null) {
+        if (token != null){
             var login = jwtUtil.getEmailFromToken(token);
             UserDetails user = usuarioRepository.findByEmail(login);
+
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         }
         filterChain.doFilter(request, response);
-
-    
     }
 
-        private String recoverToken(HttpServletRequest HttpServletRequest) {
-            var authHeader = HttpServletRequest.getHeader("Authorization");
-            if(authHeader == null) return null;
-            return authHeader.replace("Bearer ", "");
-        }
+    private String recoverToken(HttpServletRequest request){
+        var authHeader = request.getHeader("Authorization");
+        if(authHeader == null) return null;
+        return authHeader.replace("Bearer ", "");
+    }
 }

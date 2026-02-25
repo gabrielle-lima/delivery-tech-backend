@@ -1,9 +1,5 @@
 package com.deliverytech.delivery_api.controller;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +22,11 @@ import com.deliverytech.delivery_api.dto.request.ClienteRequest;
 import com.deliverytech.delivery_api.dto.response.ApiResponseWrapper;
 import com.deliverytech.delivery_api.model.Cliente;
 import com.deliverytech.delivery_api.repository.ClienteRepository;
-import com.deliverytech.delivery_api.service.*;
+import com.deliverytech.delivery_api.service.ClienteService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -40,18 +40,12 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping
-    public Cliente criar(@RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
-    }
-
-    @PostMapping
     public ResponseEntity<?> cadastrar(@Valid @RequestBody ClienteRequest clienteRequest) {
         try {
             log.info("Recebida requisição para cadastrar cliente: {}", clienteRequest.getEmail());
             Cliente clienteSalvo = clienteService.cadastrar(clienteRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
         } catch (IllegalArgumentException e) {
-            // TODO: handle exception
             log.warn("Erro de validação ao cadastrar cliente: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Erro:  " + e.getMessage());
         } catch (Exception e) {

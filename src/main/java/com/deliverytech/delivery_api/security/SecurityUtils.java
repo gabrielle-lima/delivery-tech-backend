@@ -2,9 +2,7 @@ package com.deliverytech.delivery_api.security;
 
 import java.util.Optional;
 
-import org.springframework.boot.env.ConfigTreePropertySource.Option;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.deliverytech.delivery_api.model.Usuario;
