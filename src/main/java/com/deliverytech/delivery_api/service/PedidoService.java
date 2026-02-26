@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import com.deliverytech.delivery_api.dto.request.ItemPedidoRequest;
 import com.deliverytech.delivery_api.model.Pedido;
@@ -22,7 +21,7 @@ public interface PedidoService {
     Pedido confirmar(Long id);
     Pedido cancelar(Long id);
 
-        Pedido adicionarItem(Long pedidoId, Long produtoId, Integer quantidade);
+    Pedido adicionarItem(Long pedidoId, Long produtoId, Integer quantidade);
 
     BigDecimal calcularTotal(Pedido pedido);
     BigDecimal calcularTotalPedido(List<ItemPedidoRequest> itens);
@@ -32,7 +31,7 @@ public interface PedidoService {
 
     List<Pedido> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim);
 
-    Optional<Pedido> buscarPorIdComItens(Long id);
+    List<Pedido> buscarPorIdComItens(Long id);
     
     List<Pedido> buscarPorClienteComItens(Long clienteId);
     List<Pedido> listarTodos();
